@@ -7,7 +7,7 @@ use ckb_std::{
   ckb_types::{bytes::Bytes, packed::*, prelude::*},
   high_level::{
     load_cell_data, load_cell_lock, load_cell_type, load_cell_type_hash, load_witness_args,
-    QueryIter,
+    QueryIter, load_cell_capacity,
   },
 };
 use core::result::Result;
@@ -17,11 +17,25 @@ pub const DYN_MIN_LEN: usize = 2; // the length of dynamic data size(u16)
 
 const TYPE: u8 = 1;
 const CLASS_TYPE_CODE_HASH: [u8; 32] = [
-  159, 148, 219, 121, 207, 139,  78,
-   24, 171, 249, 105,  73,   8, 241,
-  231, 235, 126,  91,  31, 163, 238,
-  216, 178,  60, 234, 130, 223,  90,
-  211, 123, 232, 197
+   78,   8,  42, 115, 174, 100,  11,  46,
+  187, 192, 210, 204, 177, 131, 115, 254,
+  240, 240, 143,  58, 171, 103, 241,  20,
+   16, 190, 248, 188,  64, 150,  75, 124
+];
+
+const PAYMENT_TYPE_CODE_HASH: [u8; 32] = [
+  155, 215, 224, 111,  62, 207, 75,
+  224, 242, 252, 210,  24, 139, 35,
+  241, 185, 252, 200, 142,  93, 75,
+  101, 168,  99, 123,  23, 114, 59,
+  189, 163, 204, 232
+];
+
+const PAYMENT_TYPE_ARGS: [u8; 20] = [
+   39, 148,  43, 226, 141,  38,
+   48, 178, 237, 234, 223, 164,
+  245, 142, 220, 147, 231, 104,
+  127, 126
 ];
 
 pub enum Action {
@@ -80,6 +94,20 @@ pub fn load_cell_data_by_type(
   QueryIter::new(load_cell_type, source)
     .position(|type_opt| type_opt.map_or(false, |type_| predicate(&type_)))
     .map(|index| load_cell_data(index, source).map_or_else(|_| Vec::new(), |data| data))
+}
+
+pub fn load_payment_cell_capacity() -> Result<u64, Error> {
+  let lock_script: Script = Script::new_builder()
+    .code_hash(PAYMENT_TYPE_CODE_HASH.pack())
+    .args(PAYMENT_TYPE_ARGS.pack())
+    .hash_type(Byte::new(TYPE))
+    .build();
+
+  QueryIter::new(load_cell_lock, Source::Output)
+    .position(|lock| lock.as_slice() == lock_script.as_slice())
+    .map_or_else(|| Err(Error::InvalidPaymentLockScript),
+      |index| load_cell_capacity(index, Source::Output)
+        .map_or(Err(Error::Encoding), |result_| Ok(result_)))
 }
 
 pub fn load_cell_data_by_type_hash(
@@ -158,4 +186,10 @@ pub fn u32_from_slice(data: &[u8]) -> u32 {
   let mut buf = [0u8; 4];
   buf.copy_from_slice(data);
   u32::from_be_bytes(buf)
+}
+
+pub fn u64_from_slice(data: &[u8]) -> u64 {
+  let mut buf = [0u8; 8];
+  buf.copy_from_slice(data);
+  u64::from_be_bytes(buf)
 }

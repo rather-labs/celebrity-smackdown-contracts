@@ -1,18 +1,18 @@
 use crate::error::Error;
-use crate::helper::{parse_dyn_vec_len, u32_from_slice, DYN_MIN_LEN};
+use crate::helper::{parse_dyn_vec_len, u64_from_slice, DYN_MIN_LEN};
 use alloc::vec::Vec;
 use core::result::Result;
 
-const FIXED_LEN: usize = 5;
+const FIXED_LEN: usize = 9;
 
 // FIXED_LEN + DYN_MIN_LEN * 2
-const CLASS_DATA_MIN_LEN: usize = 9;
+const CLASS_DATA_MIN_LEN: usize = 13;
 pub const CLASS_TYPE_ARGS_LEN: usize = 24;
 
 /// Class cell data structure
 /// This structure contains the following information:
 /// 1) version: u8
-/// 2) nft_count: u32
+/// 2) cost: u64 NFT minting cost in CKB
 /// 3) name: <size: u16> + <content>
 /// 4) description: <size: u16> + <content>
 /// 5) meta_data_cell_type_hash: <size: u16> + <content>
@@ -23,7 +23,7 @@ pub const CLASS_TYPE_ARGS_LEN: usize = 24;
 #[derive(Debug, Clone)]
 pub struct Class {
   pub version: u8,
-  pub nft_count: u32,
+  pub cost: u64,
   pub name: Vec<u8>,
   pub description: Vec<u8>,
   pub meta_data_cell_type_hash: Vec<u8>,
@@ -40,7 +40,7 @@ impl Class {
       return Err(Error::VersionInvalid);
     }
 
-    let nft_count = u32_from_slice(&data[1..5]);
+    let cost = u64_from_slice(&data[1..9]);
 
     let name_len = parse_dyn_vec_len(&data[FIXED_LEN..(FIXED_LEN + DYN_MIN_LEN)]);
     // DYN_MIN_LEN: the min length of description
@@ -65,7 +65,7 @@ impl Class {
 
     Ok(Class {
       version,
-      nft_count,
+      cost,
       name,
       description,
       meta_data_cell_type_hash,

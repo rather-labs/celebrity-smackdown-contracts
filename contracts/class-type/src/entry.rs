@@ -50,10 +50,6 @@ fn parse_class_action(class_type: &Script) -> Result<Action, Error> {
 }
 
 fn handle_creation(class_type: &Script) -> Result<(), Error> {
-  let class = Class::from_data(&load_class_data(Source::GroupOutput)?)?;
-  if class.nft_count != 0 {
-    return Err(Error::ClassIssuedInvalid);
-  }
 
   let class_args: Bytes = class_type.args().unpack();
   let issuer_inputs_count = count_cells_by_type_hash(Source::Input, &check_issuer_id(&class_args));
@@ -102,10 +98,6 @@ fn handle_update(class_type: &Script) -> Result<(), Error> {
   let input_class = load_class(Source::GroupInput)?;
   let output_class = load_class(Source::GroupOutput)?;
 
-  if output_class.nft_count < input_class.nft_count {
-    return Err(Error::ClassIssuedInvalid);
-  }
-
   if !input_class.immutable_equal(&output_class) {
     return Err(Error::ClassImmutableFieldsNotSame);
   }
@@ -116,10 +108,6 @@ fn handle_destroying(class_type: &Script) -> Result<(), Error> {
   // Disable anyone-can-pay lock
   if check_group_input_witness_is_none_with_type(class_type)? {
     return Err(Error::GroupInputWitnessNoneError);
-  }
-  let input_class = Class::from_data(&load_class_data(Source::GroupInput)?[..])?;
-  if input_class.nft_count > 0 {
-    return Err(Error::ClassCellCannotDestroyed);
   }
   Ok(())
 }
