@@ -47,6 +47,9 @@ pub enum Error {
   MetadataImmutableFieldsNotSame,
   MetadataDataInvalid,
   MetadataIdIncreaseError,
+  PaymentNotEnough = 45,
+  InvalidPaymentLockScript,
+  NFTUnlockedOnCreateError,
 }
 
 impl From<SysError> for Error {

@@ -1,11 +1,10 @@
 [package]
-name = "nft-type"
-version = "0.1.0"
+name = "tests"
+version = "0.0.1"
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ckb-std = "0.9.0"
-script-utils = { path = "../script-utils" }
-blake2b-rs = "0.2.0"
+ckb-testtool = "0.6.1"
+hex = "0.4"

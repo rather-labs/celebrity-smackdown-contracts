@@ -5,7 +5,7 @@ use core::result::Result;
 
 const FIXED_LEN: usize = 1;
 pub const NFT_DATA_MIN_LEN: usize = 3;
-pub const NFT_TYPE_ARGS_LEN: usize = 28;
+pub const NFT_TYPE_ARGS_LEN: usize = 56;
 
 /// NFT cell data structure
 /// This structure contains the following information:
