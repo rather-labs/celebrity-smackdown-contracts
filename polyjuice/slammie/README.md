@@ -3,7 +3,8 @@
 ## preparation
 
 ```
-truffle compile
+npm install
+npm install -g truffle
 ```
 
 ## deployment
