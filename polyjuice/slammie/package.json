@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.4.1",
+    "@polyjuice-provider/truffle": "^0.1.3",
+    "@polyjuice-provider/web3": "^0.1.3",
+    "dotenv": "^10.0.0",
+    "truffle": "5.4.22",
+    "web3": "1.6.1"
+  }
+}
