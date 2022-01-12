@@ -10,18 +10,18 @@ version = "0.7.0 56bf934"
 # path of deployment config file
 deployment = "deployment.toml"
 
-[[contracts]]
+[[nervos-scripts]]
 name = "issuer-type"
 template_type = "Rust"
 
-[[contracts]]
+[[nervos-scripts]]
 name = "class-type"
 template_type = "Rust"
 
-[[contracts]]
+[[nervos-scripts]]
 name = "nft-type"
 template_type = "Rust"
 
-[[contracts]]
+[[nervos-scripts]]
 name = "metadata"
 template_type = "Rust"

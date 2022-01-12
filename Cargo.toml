@@ -1,5 +1,5 @@
 [workspace]
-members = ["contracts/issuer-type", "contracts/class-type", "contracts/nft-type", "contracts/metadata","tests"]
+members = ["nervos-scripts/issuer-type", "nervos-scripts/class-type", "nervos-scripts/nft-type", "nervos-scripts/metadata","tests"]
 
 [profile.release]
 overflow-checks = true
