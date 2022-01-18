@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract DistributionWizard is Ownable {
     IERC20 token;
+    address treasury;
     uint256 public epoch;
     uint256 public initialTimestamp;
 
@@ -17,6 +18,7 @@ contract DistributionWizard is Ownable {
         uint256 _epoch
     ) {
         token = _token;
+        treasury = _treasury;
         epoch = _epoch;
         initialTimestamp = block.timestamp;
     }
@@ -47,7 +49,7 @@ contract DistributionWizard is Ownable {
         );
 
         lastTimeWithdrawn[_to] = block.timestamp;
-        token.transferFrom(_treasury, _to, _amount);
+        token.transferFrom(treasury, _to, _amount);
     }
 
     function verify(
