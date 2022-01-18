@@ -33,12 +33,6 @@ module.exports = {
   mocha: {
   },
 
-  // compilers: {
-  //   solc: {
-  //     version: "0.8.10",
-  //   }
-  // },
-
   compilers: {
     solc: {
       version: '0.8.3',
