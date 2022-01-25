@@ -16,8 +16,12 @@ const rpc = new PolyjuiceJsonRpcProvider(polyjuiceConfig, polyjuiceConfig.web3Ur
 const deployer = new PolyjuiceWallet(process.env.DEPLOYER_PRIVATE_KEY, polyjuiceConfig, rpc);
 //console.log(deployer);
 
+const slammie = require("./build/contracts/Slammie.json");
+console.log(slammie.abi);
+
+
 const contract = new ethers.Contract(
-    'your contract address',
+    '0x89e271027eaC536c5d6EFC21310d69341bbA7B08',
     'your contract abi',
     signer
   );
@@ -26,6 +30,5 @@ const contract = new ethers.Contract(
     gasPrice: 0x0,
     value: 0x0,
   };
-  const txResponse = await contract.METHOD_NAME(..args, overrides);
-  console.log(txResponse);
-  
+const txResponse = await contract.totalSupply(..args, overrides);
+console.log(txResponse);
