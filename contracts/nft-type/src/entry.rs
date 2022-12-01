@@ -123,6 +123,14 @@ fn handle_creation(nft_type: &Script) -> Result<(), Error> {
   if nft_args[24..56] != ret[0..32] {
     return Err(Error::TypeArgsInvalid);
   }
+
+  // Check the nft version is the same as class
+  let nft = Nft::from_data(&load_nft_data(Source::GroupOutput)?[..])?;
+  // Load data from class cell
+  let class_data = Class::from_data(&load_cell_data_by_type(Source::CellDep, &check_class_type(&nft_args)).unwrap())?;
+  if class_data.version != nft.version {
+    return Err(Error::NFTVersionNotSameWithClass);
+  }
   
   // Get all nfts from issuer cell
   let output_nft_types = QueryIter::new(load_cell_type, Source::Output)
@@ -141,11 +149,7 @@ fn handle_creation(nft_type: &Script) -> Result<(), Error> {
     }
 
     // Load data from class cell
-    let load_class = |source| match load_cell_data_by_type(source, &check_class_type(&nft_args)) {
-      Some(data) => Ok(Class::from_data(&data)?),
-      None => Err(Error::ClassDataInvalid),
-    };
-    let class_data = load_class(Source::CellDep)?;
+    let class_data = Class::from_data(&load_cell_data_by_type(Source::CellDep, &check_class_type(&nft_args)).unwrap())?;
 
     // convert cost from CKB to Shannon
     total_cost += class_data.cost * 100000000;

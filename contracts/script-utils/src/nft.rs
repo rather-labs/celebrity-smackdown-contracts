@@ -24,9 +24,6 @@ impl Nft {
     }
 
     let version: u8 = raw_data[0];
-    if version != 0 {
-      return Err(Error::VersionInvalid);
-    }
 
     let data_len = parse_dyn_vec_len(&raw_data[FIXED_LEN..(FIXED_LEN + DYN_MIN_LEN)]);
     let data = raw_data[FIXED_LEN..(FIXED_LEN + data_len)].to_vec();

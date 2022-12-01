@@ -12,10 +12,10 @@ const MAX_CYCLES: u64 = 70_000_000;
 
 const TYPE: u8 = 1;
 const CLASS_TYPE_CODE_HASH: [u8; 32] = [
-   78,   8,  42, 115, 174, 100,  11,  46,
-  187, 192, 210, 204, 177, 131, 115, 254,
-  240, 240, 143,  58, 171, 103, 241,  20,
-   16, 190, 248, 188,  64, 150,  75, 124
+  178,  41, 227,  89, 116, 182, 82, 136,
+   50,  89,  68,  83,  32, 115, 46,  24,
+  142, 155, 214,   3,  74,  26, 47, 192,
+   28, 109, 121, 199, 250, 107,  6, 242
 ];
 
 const PAYMENT_TYPE_CODE_HASH: [u8; 32] = [
@@ -27,10 +27,10 @@ const PAYMENT_TYPE_CODE_HASH: [u8; 32] = [
 ];
 
 const PAYMENT_TYPE_ARGS: [u8; 20] = [
-   39, 148,  43, 226, 141,  38,
-   48, 178, 237, 234, 223, 164,
-  245, 142, 220, 147, 231, 104,
-  127, 126
+  39, 148,  43, 226, 141,  38,
+  48, 178, 237, 234, 223, 164,
+ 245, 142, 220, 147, 231, 104,
+ 127, 126
 ];
 
 fn create_test_context() -> (Context, TransactionView) {
@@ -64,7 +64,7 @@ fn create_test_context() -> (Context, TransactionView) {
         .expect("script");
 
     // class type script and inputs
-    let class_input_data = Bytes::from(hex::decode("0000000000000003E8000200000002000000020000").unwrap());
+    let class_input_data = Bytes::from(hex::decode("0100000000000003E8000200000002000000020000").unwrap());
 
     let issuer_type_hash: [u8; 32] = issuer_type_script.clone().calc_script_hash().unpack();
     let mut class_type_args = issuer_type_hash[0..20].to_vec();
@@ -89,7 +89,7 @@ fn create_test_context() -> (Context, TransactionView) {
         .build();
 
     // another class type script and inputs
-    let class_input_data_2 = Bytes::from(hex::decode("0000000000000001F4000200000002000000020000").unwrap());
+    let class_input_data_2 = Bytes::from(hex::decode("0200000000000001F4000200000002000000020000").unwrap());
 
     let issuer_type_hash: [u8; 32] = issuer_type_script.clone().calc_script_hash().unpack();
     let mut class_type_args_2 = issuer_type_hash[0..20].to_vec();
@@ -212,9 +212,9 @@ fn create_test_context() -> (Context, TransactionView) {
         
     let outputs_data: Vec<_> = vec![
       Bytes::from(hex::decode("00").unwrap()),
-      Bytes::from(hex::decode("000100006400000010000001550002616546546660000003898989").unwrap()),
-      Bytes::from(hex::decode("0001000064000000100000015500026165465466600000898989").unwrap()),
-      Bytes::from(hex::decode("00010000640000001000000155000261654654666000898989").unwrap()),
+      Bytes::from(hex::decode("01000100006400000010000001550002616546546660000003898989").unwrap()),
+      Bytes::from(hex::decode("010001000064000000100000015500026165465466600000898989").unwrap()),
+      Bytes::from(hex::decode("0200010000640000001000000155000261654654666000898989").unwrap()),
     ];
 
     let mut witnesses = vec![];

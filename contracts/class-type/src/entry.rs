@@ -98,6 +98,10 @@ fn handle_update(class_type: &Script) -> Result<(), Error> {
   let input_class = load_class(Source::GroupInput)?;
   let output_class = load_class(Source::GroupOutput)?;
 
+  if output_class.version < input_class.version {
+    return Err(Error::CannotDecrementClassVersion);
+  }
+
   if !input_class.immutable_equal(&output_class) {
     return Err(Error::ClassImmutableFieldsNotSame);
   }

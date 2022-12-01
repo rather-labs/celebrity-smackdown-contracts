@@ -7,5 +7,8 @@ pub fn validate_immutable_nft_fields((input_nft, output_nft): &Nfts) -> Result<(
   if input_nft.data != output_nft.data {
     return Err(Error::NFTDataNotSame);
   }
+  if input_nft.version != output_nft.version {
+    return Err(Error::NFTVersionNotSame);
+  }
   Ok(())
 }

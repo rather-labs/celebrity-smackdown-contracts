@@ -36,9 +36,6 @@ impl Class {
     }
 
     let version: u8 = data[0];
-    if version != 0 {
-      return Err(Error::VersionInvalid);
-    }
 
     let cost = u64_from_slice(&data[1..9]);
 
